@@ -1,0 +1,6 @@
+{
+  "name": "Cardápio Digital Burgers",
+  "description": "Cardápio digital moderno e responsivo para hamburgueria artesanal com catálogo completo, fotos em alta definição, carrinho interativo e pedidos instantâneos via WhatsApp.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

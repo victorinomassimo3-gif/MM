@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090909">
+  <title>Cardápio Digital | Burgers</title>
+  <style>
+    :root{--bg:#090909;--panel:#151515;--orange:#ff7900;--orange2:#ff9b24;--white:#fff;--muted:#b8b8b8}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,Helvetica,sans-serif}
+    .wrap{max-width:1100px;margin:auto;padding:22px 16px 110px}
+    header{text-align:center;padding:24px 12px 30px;border-bottom:1px solid #292929}
+    .eyebrow{color:var(--orange);font-weight:900;letter-spacing:4px;font-size:13px}
+    h1{font-size:clamp(38px,8vw,76px);line-height:.95;margin:9px 0;text-transform:uppercase;font-weight:1000}
+    h1 span{color:var(--orange)} .subtitle{color:var(--muted);margin:12px 0 0}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:18px;align-items:center;margin:22px 0 30px}
+    .hero-copy{padding:26px;border:1px solid #333;border-radius:18px;background:linear-gradient(135deg,#1d1d1d,#090909)}
+    .hero-copy h2{font-size:clamp(25px,4vw,42px);margin:0 0 10px;text-transform:uppercase}
+    .hero-copy h2 span{color:var(--orange)} .hero-copy p{color:var(--muted);line-height:1.55}
+    .hero-art{min-height:220px;border-radius:18px;border:2px solid var(--orange);display:grid;place-items:center;background:radial-gradient(circle at 50% 45%,#754018 0,#2b170d 35%,#101010 72%);font-size:clamp(80px,15vw,150px)}
+    .section{margin:30px 0}.section-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+    .section-head h2{font-size:25px;margin:0;text-transform:uppercase}.section-head:after{content:"";height:2px;background:var(--orange);flex:1}
+    .products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+    .product{background:var(--panel);border:1px solid #303030;border-radius:14px;padding:15px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+    .product h3{font-size:17px;margin:0 0 6px;text-transform:uppercase}.product p{font-size:12px;color:var(--muted);line-height:1.4;margin:0}
+    .price{color:var(--orange2);font-weight:900;font-size:18px;white-space:nowrap}
+    .controls{display:flex;align-items:center;gap:8px;margin-top:12px}
+    .qty-btn{width:31px;height:31px;border:0;border-radius:50%;background:#292929;color:white;font-size:20px;cursor:pointer}
+    .qty{min-width:20px;text-align:center;font-weight:bold}
+    .add{background:var(--orange);color:#111;border:0;border-radius:8px;padding:9px 12px;font-weight:900;cursor:pointer}
+    .add:hover,.checkout:hover{background:var(--orange2)}
+    .cart{margin-top:32px;padding:20px;background:#141414;border:1px solid #393939;border-radius:16px}
+    .cart h2{margin:0 0 14px;text-transform:uppercase}.cart-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #2c2c2c;font-size:14px}
+    .cart-empty{color:var(--muted);font-size:14px}.total{display:flex;justify-content:space-between;font-size:22px;font-weight:900;margin:18px 0}.total strong{color:var(--orange2)}
+    .customer{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:15px 0}
+    input,textarea{width:100%;padding:13px;border:1px solid #444;border-radius:9px;background:#0c0c0c;color:white;font:inherit}
+    textarea{grid-column:1/-1;min-height:75px;resize:vertical}
+    .checkout{width:100%;padding:15px;border:0;border-radius:10px;background:var(--orange);color:#111;font-size:16px;font-weight:1000;cursor:pointer}
+    .note{font-size:12px;color:var(--muted);line-height:1.5;margin-top:10px}
+    footer{text-align:center;color:var(--muted);font-size:13px;padding:30px 10px 0;line-height:1.7}
+    @media(max-width:650px){.hero{grid-template-columns:1fr}.hero-art{min-height:170px}.products{grid-template-columns:1fr}.customer{grid-template-columns:1fr}textarea{grid-column:auto}.wrap{padding-left:12px;padding-right:12px}}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow">SABOR • QUALIDADE • TRADIÇÃO</div>
+    <h1>Menu <span>Burgers</span></h1>
+    <p class="subtitle">Escolha os seus favoritos e faça o seu pedido online.</p>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">FEITO PARA MATAR A FOME</div>
+      <h2>O seu burger <span>favorito</span> está aqui!</h2>
+      <p>Hambúrgueres preparados com muito sabor. Escolha os produtos, indique as quantidades e envie o seu pedido pelo WhatsApp.</p>
+    </div>
+    <div class="hero-art" aria-label="Ilustração de hambúrguer">🍔</div>
+  </section>
+
+  <main id="menu"></main>
+
+  <section class="cart" id="carrinho">
+    <h2>O seu pedido</h2>
+    <div id="cart-items" class="cart-empty">Ainda não adicionou nenhum produto.</div>
+    <div class="total"><span>Total</span><strong id="total">R$ 0,00</strong></div>
+    <div class="customer">
+      <input id="customer-name" type="text" placeholder="O seu nome *" autocomplete="name">
+      <input id="customer-phone" type="tel" placeholder="O seu telefone (opcional)">
+      <input id="customer-address" type="text" placeholder="Endereço para entrega *" style="grid-column:1/-1">
+      <textarea id="customer-notes" placeholder="Observações do pedido (opcional)"></textarea>
+    </div>
+    <button class="checkout" onclick="sendOrder()">SOLICITAR PELO WHATSAPP</button>
+    <p class="note">O pedido será enviado para o WhatsApp do estabelecimento. A confirmação da encomenda e da entrega será feita diretamente pela equipa.</p>
+  </section>
+
+  <footer>
+    <strong>MENU BURGERS</strong><br>
+    Atendimento e delivery pelo WhatsApp<br>
+    <span id="delivery-info">Consulte a disponibilidade de entrega.</span>
+  </footer>
+</div>
+
+<script>
+  // CONFIGURAÇÃO: substitua pelo número real, com indicativo do país e apenas algarismos.
+  // Exemplo Angola: 244923000000 | Exemplo Brasil: 5511999999999
+  const WHATSAPP_NUMBER = "SUBSTITUIR_PELO_NUMERO";
+
+  const menuData = [
+    {category:"Simples",items:[
+      {id:"x-bacon",name:"X-Bacon",description:"Alface, tomate, batata palha, milho, hambúrguer, presunto, muçarela e bacon.",price:22},
+      {id:"bacon-especial",name:"Bacon Especial",description:"Alface, tomate, batata palha, milho, hambúrguer, presunto, muçarela, bacon, salsicha e ovo.",price:22},
+      {id:"x-frango",name:"X-Frango",description:"Alface, tomate, batata palha, milho, filé de frango, presunto, muçarela e bacon.",price:22},
+      {id:"frango-especial",name:"Frango Especial",description:"Alface, tomate, batata palha, milho, filé de frango, presunto, muçarela, bacon, salsicha e ovo.",price:22}
+    ]},
+    {category:"Especiais",items:[
+      {id:"x-bacon-turbo",name:"X-Bacon Turbo",description:"Alface, tomate, batata palha, milho, hambúrguer, presunto, muçarela e bacon.",price:22},
+      {id:"bacon-mega",name:"Bacon Mega",description:"Alface, tomate, batata palha, milho, hambúrguer, presunto, muçarela, bacon, salsicha e ovo.",price:22},
+      {id:"x-frango-turbo",name:"X-Frango Turbo",description:"Alface, tomate, batata palha, milho, filé de frango, presunto, muçarela e bacon.",price:22},
+      {id:"frango-mega",name:"Frango Mega",description:"Alface, tomate, batata palha, milho, filé de frango, presunto, muçarela, bacon, salsicha e ovo.",price:22}
+    ]},
+    {category:"Acompanhamentos",items:[
+      {id:"batata-pequena",name:"Batata pequena — 100 g",description:"Porção individual.",price:7},
+      {id:"batata-grande",name:"Batata grande — 500 g",description:"Porção para partilhar.",price:10},
+      {id:"batata-queijo-bacon",name:"Batata com queijo e bacon",description:"Batata com cobertura de queijo e bacon.",price:15},
+      {id:"aneis-cebola",name:"Anéis de cebola",description:"Porção crocante.",price:12}
+    ]},
+    {category:"Bebidas",items:[
+      {id:"refri-2l",name:"Refrigerante — 2 litros",description:"Consulte os sabores disponíveis.",price:9},
+      {id:"refri-lata",name:"Refrigerante — lata",description:"Consulte os sabores disponíveis.",price:5},
+      {id:"suco-natural",name:"Sumo natural",description:"Consulte os sabores disponíveis.",price:7},
+      {id:"suco-lata",name:"Sumo — lata",description:"Consulte os sabores disponíveis.",price:5}
+    ]}
+  ];
+
+  const quantities = {};
+  const cart = {};
+  const money = value => "R$ " + value.toFixed(2).replace(".", ",");
+  const menu = document.getElementById("menu");
+
+  menuData.forEach(section => {
+    const sectionEl = document.createElement("section");
+    sectionEl.className = "section";
+    sectionEl.innerHTML = `<div class="section-head"><h2>${section.category}</h2></div><div class="products"></div>`;
+    const grid = sectionEl.querySelector(".products");
+    section.items.forEach(item => {
+      quantities[item.id] = 1;
+      const card = document.createElement("article");
+      card.className = "product";
+      card.innerHTML = `
+        <div>
+          <h3>${item.name}</h3><p>${item.description}</p>
+          <div class="controls">
+            <button class="qty-btn" aria-label="Diminuir ${item.name}" onclick="changeQty('${item.id}',-1)">−</button>
+            <span class="qty" id="qty-${item.id}">1</span>
+            <button class="qty-btn" aria-label="Aumentar ${item.name}" onclick="changeQty('${item.id}',1)">+</button>
+            <button class="add" onclick="addToCart('${item.id}')">Adicionar</button>
+          </div>
+        </div>
+        <div class="price">${money(item.price)}</div>`;
+      grid.appendChild(card);
+    });
+    menu.appendChild(sectionEl);
+  });
+
+  function findProduct(id){
+    for(const section of menuData){
+      const found = section.items.find(item => item.id === id);
+      if(found) return found;
+    }
+  }
+  function changeQty(id,delta){
+    quantities[id] = Math.max(1,(quantities[id] || 1) + delta);
+    document.getElementById("qty-"+id).textContent = quantities[id];
+  }
+  function addToCart(id){
+    cart[id] = (cart[id] || 0) + quantities[id];
+    renderCart();
+    document.getElementById("carrinho").scrollIntoView({behavior:"smooth",block:"nearest"});
+  }
+  function removeFromCart(id){
+    delete cart[id];
+    renderCart();
+  }
+  function renderCart(){
+    const box = document.getElementById("cart-items");
+    const ids = Object.keys(cart);
+    if(!ids.length){
+      box.className = "cart-empty";
+      box.textContent = "Ainda não adicionou nenhum produto.";
+    } else {
+      box.className = "";
+      box.innerHTML = ids.map(id => {
+        const p = findProduct(id), qty = cart[id], subtotal = p.price * qty;
+        return `<div class="cart-row"><span>${p.name} × ${qty}<br><small>${money(p.price)} cada</small></span><span>${money(subtotal)} <button onclick="removeFromCart('${id}')" style="margin-left:8px;background:none;border:0;color:#ff8a32;cursor:pointer">Remover</button></span></div>`;
+      }).join("");
+    }
+    document.getElementById("total").textContent = money(ids.reduce((sum,id)=>sum+findProduct(id).price*cart[id],0));
+  }
+  function sendOrder(){
+    const ids = Object.keys(cart);
+    const name = document.getElementById("customer-name").value.trim();
+    const address = document.getElementById("customer-address").value.trim();
+    const phone = document.getElementById("customer-phone").value.trim();
+    const notes = document.getElementById("customer-notes").value.trim();
+    if(!ids.length){alert("Adicione pelo menos um produto ao pedido.");return;}
+    if(!name || !address){alert("Preencha o seu nome e o endereço de entrega.");return;}
+    if(WHATSAPP_NUMBER === "SUBSTITUIR_PELO_NUMERO"){
+      alert("O responsável pelo cardápio precisa configurar o número de WhatsApp no código.");return;
+    }
+    const total = ids.reduce((sum,id)=>sum+findProduct(id).price*cart[id],0);
+    const lines = ids.map(id=>{
+      const p=findProduct(id), q=cart[id];
+      return `• ${p.name} — ${q} x ${money(p.price)} = ${money(q*p.price)}`;
+    });
+    const message = [
+      "Olá! Gostaria de fazer este pedido:",
+      "",
+      ...lines,
+      "",
+      `TOTAL: ${money(total)}`,
+      "",
+      `Nome: ${name}`,
+      phone ? `Telefone: ${phone}` : "",
+      `Endereço de entrega: ${address}`,
+      notes ? `Observações: ${notes}` : "",
+      "",
+      "Aguardo a confirmação do pedido. Obrigado!"
+    ].filter(Boolean).join("\n");
+    const url = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + encodeURIComponent(message);
+    window.open(url,"_blank");
+  }
+</script>
+</body>
+</html>
